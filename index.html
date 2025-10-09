@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patch AI Console | Lightweight AI Assistant</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #8bc34a;
+            --primary-dark: #306824;
+            --bg: #0f1720;
+            --bg-light: #12202a;
+            --text: #a8b2bf;
+            --text-light: #cfe0c7;
+            --accent: #4fc3f7;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Source Code Pro', monospace;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--bg) 0%, #0c1a25 100%);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: rgba(15, 23, 32, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(139, 195, 74, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            font-size: 28px;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 12px 24px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(139, 195, 74, 0.3);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 100px 0;
+            text-align: center;
+            background: linear-gradient(180deg, rgba(15, 23, 32, 0.8), rgba(12, 26, 37, 0.9));
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            color: var(--text-light);
+        }
+
+        /* Terminal Section */
+        .terminal-section {
+            padding: 80px 0;
+            background: var(--bg-light);
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .section-title p {
+            max-width: 600px;
+            margin: 0 auto;
+            color: var(--text);
+        }
+
+        .terminal-container {
+            background: var(--bg);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(139, 195, 74, 0.1);
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .terminal-header {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .terminal-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .terminal-button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .terminal-button.close {
+            background: #ff5f57;
+        }
+
+        .terminal-button.minimize {
+            background: #ffbd2e;
+        }
+
+        .terminal-button.maximize {
+            background: #28ca42;
+        }
+
+        .terminal-title {
+            flex: 1;
+            text-align: center;
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        .terminal-body {
+            padding: 20px;
+            height: 400px;
+            overflow-y: auto;
+            background: #0a0e14;
+        }
+
+        .terminal-output {
+            margin-bottom: 15px;
+        }
+
+        .command-line {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .prompt {
+            color: var(--primary);
+            margin-right: 10px;
+            white-space: nowrap;
+        }
+
+        .command-input {
+            background: transparent;
+            border: none;
+            color: var(--text-light);
+            font-size: 16px;
+            flex: 1;
+            outline: none;
+            font-family: 'Source Code Pro', monospace;
+        }
+
+        .output-line {
+            margin: 8px 0;
+            line-height: 1.5;
+        }
+
+        .output-line.system {
+            color: var(--accent);
+        }
+
+        .output-line.error {
+            color: var(--error);
+        }
+
+        .output-line.success {
+            color: var(--success);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 80px 0;
+            background: var(--bg);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .feature-card {
+            background: var(--bg-light);
+            padding: 30px;
+            border-radius: 10px;
+            border: 1px solid rgba(139, 195, 74, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .feature-icon {
+            font-size: 40px;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--text-light);
+        }
+
+        /* Models Section */
+        .models {
+            padding: 80px 0;
+            background: var(--bg-light);
+        }
+
+        .models-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 50px;
+        }
+
+        .model-card {
+            background: var(--bg);
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid rgba(79, 195, 247, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .model-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-5px);
+        }
+
+        .model-icon {
+            font-size: 36px;
+            color: var(--accent);
+            margin-bottom: 15px;
+        }
+
+        .model-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: var(--text-light);
+        }
+
+        .model-status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-top: 10px;
+        }
+
+        .status-online {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+        }
+
+        /* Setup Section */
+        .setup {
+            padding: 80px 0;
+            background: var(--bg);
+        }
+
+        .setup-steps {
+            max-width: 700px;
+            margin: 50px auto 0;
+        }
+
+        .setup-step {
+            display: flex;
+            margin-bottom: 30px;
+            align-items: flex-start;
+        }
+
+        .step-number {
+            background: var(--primary);
+            color: var(--bg);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+
+        .step-content h3 {
+            margin-bottom: 10px;
+            color: var(--text-light);
+        }
+
+        .code-block {
+            background: #0a0e14;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+            border-left: 3px solid var(--primary);
+            overflow-x: auto;
+        }
+
+        /* Footer */
+        footer {
+            background: #0a0e14;
+            padding: 60px 0 30px;
+            border-top: 1px solid rgba(139, 195, 74, 0.1);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h3 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: var(--text);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(139, 195, 74, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .nav-links {
+                gap: 20px;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .terminal-body {
+                height: 300px;
+            }
+        }
+
+        /* Animation for terminal text */
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 18px;
+            background: var(--primary);
+            margin-left: 5px;
+            animation: blink 1s infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="#" class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-terminal"></i>
+                    </div>
+                    <div class="logo-text">Patch AI</div>
+                </a>
+
+                <nav class="nav">
+                    <div class="nav-links">
+                        <a href="#features">Features</a>
+                        <a href="#models">Models</a>
+                        <a href="#setup">Setup</a>
+                        <a href="#terminal">Try Demo</a>
+                    </div>
+                </nav>
+
+                <a href="#setup" class="cta-button">Get Started</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Patch AI Console</h1>
+            <p>A lightweight, efficient AI console designed for developers and power users. Experience the power of local AI with minimal resource consumption.</p>
+            <a href="#terminal" class="cta-button">Try Live Demo</a>
+        </div>
+    </section>
+
+    <!-- Terminal Section -->
+    <section class="terminal-section" id="terminal">
+        <div class="container">
+            <div class="section-title">
+                <h2>Interactive Demo</h2>
+                <p>Experience Patch AI Console right in your browser. Type commands below to interact with the simulated AI.</p>
+            </div>
+
+            <div class="terminal-container">
+                <div class="terminal-header">
+                    <div class="terminal-buttons">
+                        <div class="terminal-button close"></div>
+                        <div class="terminal-button minimize"></div>
+                        <div class="terminal-button maximize"></div>
+                    </div>
+                    <div class="terminal-title">patch-ai-console — bash — 80x24</div>
+                </div>
+                <div class="terminal-body" id="terminalBody">
+                    <div class="terminal-output">
+                        <div class="output-line system">Patch AI Console v1.0.3</div>
+                        <div class="output-line system">Initializing systems...</div>
+                        <div class="output-line system">Memory module loaded</div>
+                        <div class="output-line system">Model registry active</div>
+                        <div class="output-line success">System ready. Type 'help' for available commands.</div>
+                    </div>
+                    <div class="command-line">
+                        <span class="prompt">user@patch:~$</span>
+                        <input type="text" class="command-input" id="commandInput" autofocus>
+                        <span class="cursor"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-title">
+                <h2>Core Features</h2>
+                <p>Patch is designed for efficiency and ease of use, with powerful capabilities.</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3>Lightweight & Fast</h3>
+                    <p>Optimized for minimal resource consumption with rapid response times. Runs efficiently on standard hardware.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>Multi-Model Support</h3>
+                    <p>Switch between different AI models based on your needs - from fast responses to complex reasoning tasks.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-memory"></i>
+                    </div>
+                    <h3>Session Memory</h3>
+                    <p>Maintains context across conversations with categorized memory storage (MOOD, GOAL, NOTE, REFLECTION).</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3>Developer Friendly</h3>
+                    <p>Simple setup with clear documentation. Easy to extend and customize for your specific use cases.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-plug"></i>
+                    </div>
+                    <h3>Cross-Platform</h3>
+                    <p>Runs on Windows, macOS, and Linux. Synchronize your environment across multiple devices.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Privacy Focused</h3>
+                    <p>All processing happens locally on your machine. Your data never leaves your control.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Models Section -->
+    <section class="models" id="models">
+        <div class="container">
+            <div class="section-title">
+                <h2>AI Models</h2>
+                <p>Patch supports multiple AI models, each optimized for different use cases.</p>
+            </div>
+
+            <div class="models-grid">
+                <div class="model-card">
+                    <div class="model-icon">
+                        <i class="fas fa-feather"></i>
+                    </div>
+                    <h3>TinyLlama</h3>
+                    <p>Fast and efficient model perfect for everyday tasks and quick responses.</p>
+                    <div class="model-status status-online">Default</div>
+                </div>
+
+                <div class="model-card">
+                    <div class="model-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3>SmollM2</h3>
+                    <p>Balanced model offering good performance with reasonable resource usage.</p>
+                    <div class="model-status status-online">Available</div>
+                </div>
+
+                <div class="model-card">
+                    <div class="model-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h3>DeepSeek</h3>
+                    <p>Advanced model for complex reasoning tasks and detailed analysis.</p>
+                    <div class="model-status status-online">Available</div>
+                </div>
+
+                <div class="model-card">
+                    <div class="model-icon">
+                        <i class="fas fa-plus"></i>
+                    </div>
+                    <h3>Custom Models</h3>
+                    <p>Add your own models or fine-tuned versions for specialized tasks.</p>
+                    <div class="model-status status-online">Expandable</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Setup Section -->
+    <section class="setup" id="setup">
+        <div class="container">
+            <div class="section-title">
+                <h2>Quick Setup</h2>
+                <p>Get Patch AI Console running on your system in minutes.</p>
+            </div>
+
+            <div class="setup-steps">
+                <div class="setup-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Install Ollama</h3>
+                        <p>First, install Ollama on your system to manage AI models.</p>
+                        <div class="code-block">
+                            <code># On macOS<br>brew install ollama</code>
+                        </div>
+                        <div class="code-block">
+                            <code># On Linux<br>curl -fsSL https://ollama.ai/install.sh | sh</code>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="setup-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Download Patch</h3>
+                        <p>Download the Patch AI Console script to your preferred directory.</p>
+                        <div class="code-block">
+                            <code>curl -o patch-console.sh https://patch.ai/download/patch-console.sh</code>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="setup-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Run Patch</h3>
+                        <p>Make the script executable and run it to start the console.</p>
+                        <div class="code-block">
+                            <code>chmod +x patch-console.sh<br>./patch-console.sh</code>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="setup-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>Start Using</h3>
+                        <p>Begin interacting with Patch. Type 'help' to see available commands.</p>
+                        <div class="code-block">
+                            <code>user@patch:~$ help</code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Patch AI</h3>
+                    <p>A lightweight, efficient AI console for developers and power users.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-column">
+                    <h3>Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Documentation</a></li>
+                        <li><a href="#">Tutorials</a></li>
+                        <li><a href="#">API Reference</a></li>
+                        <li><a href="#">Community</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h3>Download</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Windows</a></li>
+                        <li><a href="#">macOS</a></li>
+                        <li><a href="#">Linux</a></li>
+                        <li><a href="#">Docker</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h3>Connect</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">GitHub</a></li>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 Patch AI Console. Created with ❤️ by Cesar Reyes.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const terminalBody = document.getElementById('terminalBody');
+            const commandInput = document.getElementById('commandInput');
+            
+            // Command history and responses
+            const commandHistory = [];
+            let historyIndex = -1;
+            
+            // Available commands and responses
+            const commands = {
+                'help': `Available commands:
+  help - Show this help message
+  about - Information about Patch AI
+  models - List available AI models
+  memory - Show memory system info
+  clear - Clear the terminal
+  exit - Exit the console (in desktop version)`,
+                
+                'about': `Patch AI Console v1.0.3
+A lightweight, efficient AI console for developers.
+  
+Features:
+  - Multi-model AI support (TinyLlama, SmollM2, DeepSeek)
+  - Session memory with categorization
+  - Cross-platform compatibility
+  - Minimal resource consumption
+  - Privacy-focused local processing`,
+                
+                'models': `Available AI Models:
+  
+1. TinyLlama (default)
+   - Fast and lightweight
+   - Perfect for everyday tasks
+   - Low resource requirements
+  
+2. SmollM2
+   - Balanced performance
+   - Good for general purpose use
+   - Moderate resource usage
+  
+3. DeepSeek
+   - Advanced reasoning capabilities
+   - Best for complex tasks
+   - Higher resource requirements`,
+                
+                'memory': `Memory System:
+  
+Patch maintains conversation context with categorized memory:
+  
+  [MOOD] - Emotional state and preferences
+  [GOAL] - Current objectives and tasks
+  [NOTE] - Important information and facts
+  [FEEDBACK] - System performance notes
+  [REFLECTION] - Learning and improvement insights
+  
+Type 'memory view' to see current session memory.`,
+                
+                'memory view': `Current Session Memory:
+  
+[GOAL] Demonstrate Patch AI Console capabilities
+[NOTE] User is interacting with web demo version
+[REFLECTION] System responding well to command inputs`,
+                
+                'clear': '', // Special case - handled separately
+                
+                'exit': 'This is a web demo. In the desktop version, this would exit the console.',
+                
+                '': '' // Handle empty input
+            };
+            
+            // Default response for unknown commands
+            const defaultResponse = "Command not recognized. Type 'help' for available commands.";
+            
+            // Function to add output to terminal
+            function addOutput(text, className = '') {
+                const outputLine = document.createElement('div');
+                outputLine.className = `output-line ${className}`;
+                outputLine.textContent = text;
+                terminalBody.insertBefore(outputLine, terminalBody.lastElementChild);
+                terminalBody.scrollTop = terminalBody.scrollHeight;
+            }
+            
+            // Function to process commands
+            function processCommand(command) {
+                // Add command to history
+                commandHistory.push(command);
+                historyIndex = commandHistory.length;
+                
+                // Show the command that was entered
+                addOutput(`user@patch:~$ ${command}`);
+                
+                // Process special commands
+                if (command === 'clear') {
+                    // Clear terminal except the last command line
+                    const outputLines = document.querySelectorAll('.output-line');
+                    outputLines.forEach(line => line.remove());
+                    return;
+                }
+                
+                // Get response or use default
+                const response = commands[command.toLowerCase()] || defaultResponse;
+                
+                // Add response to terminal
+                if (response) {
+                    // Split response by lines and add each separately
+                    response.split('\n').forEach(line => {
+                        addOutput(line);
+                    });
+                }
+            }
+            
+            // Handle command input
+            commandInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    const command = commandInput.value.trim();
+                    if (command) {
+                        processCommand(command);
+                    }
+                    commandInput.value = '';
+                } else if (e.key === 'ArrowUp') {
+                    // Navigate command history
+                    e.preventDefault();
+                    if (commandHistory.length > 0) {
+                        if (historyIndex > 0) {
+                            historyIndex--;
+                        }
+                        commandInput.value = commandHistory[historyIndex] || '';
+                    }
+                } else if (e.key === 'ArrowDown') {
+                    // Navigate command history
+                    e.preventDefault();
+                    if (historyIndex < commandHistory.length - 1) {
+                        historyIndex++;
+                        commandInput.value = commandHistory[historyIndex] || '';
+                    } else {
+                        historyIndex = commandHistory.length;
+                        commandInput.value = '';
+                    }
+                }
+            });
+            
+            // Focus on input when clicking anywhere in terminal
+            terminalBody.addEventListener('click', function() {
+                commandInput.focus();
+            });
+        });
+    </script>
+</body>
+</html>
