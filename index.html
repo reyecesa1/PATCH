@@ -56,35 +56,36 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 0;
+            padding: 12px 0;
         }
 
         .logo {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             color: var(--primary);
             text-decoration: none;
         }
 
         .logo-icon {
-            font-size: 28px;
+            font-size: 24px;
         }
 
         .logo-text {
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 600;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
         }
 
         .nav {
             display: flex;
             align-items: center;
+            gap: 15px;
         }
 
         .nav-links {
             display: flex;
-            gap: 30px;
+            gap: 25px;
         }
 
         .nav-links a {
@@ -93,6 +94,7 @@
             font-weight: 500;
             transition: color 0.3s ease;
             position: relative;
+            font-size: 0.95rem;
         }
 
         .nav-links a:hover {
@@ -117,7 +119,7 @@
         .cta-button {
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
-            padding: 12px 24px;
+            padding: 8px 18px;
             border-radius: 6px;
             text-decoration: none;
             font-weight: 600;
@@ -126,6 +128,7 @@
             cursor: pointer;
             box-shadow: 0 4px 10px rgba(229, 57, 53, 0.3);
             white-space: nowrap;
+            font-size: 0.9rem;
         }
 
         .cta-button:hover {
@@ -534,8 +537,15 @@
             background: none;
             border: none;
             color: var(--text);
-            font-size: 24px;
+            font-size: 20px;
             cursor: pointer;
+            padding: 5px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        .mobile-menu-toggle:hover {
+            background-color: rgba(255, 255, 255, 0.1);
         }
 
         /* Responsive Design */
@@ -548,7 +558,8 @@
         @media (max-width: 768px) {
             .header-content {
                 flex-wrap: wrap;
-                gap: 15px;
+                gap: 12px;
+                padding: 10px 0;
             }
 
             .logo {
@@ -562,29 +573,38 @@
             .nav {
                 width: 100%;
                 display: none;
+                flex-direction: column;
+                gap: 0;
             }
 
             .nav.active {
-                display: block;
+                display: flex;
             }
 
             .nav-links {
                 flex-direction: column;
-                gap: 15px;
-                padding: 20px 0;
+                gap: 0;
+                padding: 15px 0;
                 width: 100%;
             }
 
             .nav-links a {
-                padding: 10px 0;
+                padding: 12px 0;
                 display: block;
                 border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                font-size: 1rem;
+            }
+
+            .nav-links a:last-child {
+                border-bottom: none;
             }
 
             .cta-button {
                 width: 100%;
                 text-align: center;
-                margin-top: 10px;
+                margin-top: 15px;
+                padding: 10px 18px;
+                font-size: 1rem;
             }
 
             .hero {
@@ -638,7 +658,7 @@
             }
 
             .header-content {
-                padding: 10px 0;
+                padding: 8px 0;
             }
 
             .logo-text {
@@ -646,7 +666,7 @@
             }
 
             .logo-icon {
-                font-size: 24px;
+                font-size: 22px;
             }
 
             .hero {
