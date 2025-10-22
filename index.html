@@ -136,7 +136,7 @@
         /* Hero Section with Video Background - FIXED CENTERING */
         .hero {
             position: relative;
-            padding: 80px 0;
+            padding: 80px 20px;
             text-align: center;
             overflow: hidden;
             min-height: 80vh;
@@ -174,7 +174,8 @@
             max-width: 800px;
             width: 100%;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0;
+            text-align: center;
         }
 
         .hero h1 {
@@ -587,7 +588,7 @@
             }
 
             .hero {
-                padding: 60px 0;
+                padding: 60px 15px;
                 min-height: 70vh;
             }
 
@@ -649,7 +650,7 @@
             }
 
             .hero {
-                padding: 40px 0;
+                padding: 40px 10px;
                 min-height: 60vh;
             }
 
@@ -740,19 +741,18 @@
         </div>
     </header>
 
-    <!-- Hero Section with Video Background -->
+    <!-- Hero Section with Video Background - FIXED CENTERING -->
     <section class="hero">
         <video autoplay muted loop playsinline class="hero-video">
             <source src="patch.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
         <div class="hero-overlay"></div>
-        <div class="container">
-            <div class="hero-content">
-                <h1>Patch AI Console</h1>
-                <p>A lightweight, efficient AI console designed for developers and power users. Experience the power of local AI with minimal resource consumption.</p>
-                <a href="#terminal" class="cta-button">Try Live Demo</a>
-            </div>
+        <!-- Removed container wrapper for perfect centering -->
+        <div class="hero-content">
+            <h1>Patch AI Console</h1>
+            <p>A lightweight, efficient AI console designed for developers and power users. Experience the power of local AI with minimal resource consumption.</p>
+            <a href="#terminal" class="cta-button">Try Live Demo</a>
         </div>
     </section>
 
