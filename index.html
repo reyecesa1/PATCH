@@ -39,6 +39,7 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
+            width: 100%;
         }
 
         /* Header */
@@ -55,7 +56,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 0;
+            padding: 15px 0;
         }
 
         .logo {
@@ -74,6 +75,11 @@
             font-size: 24px;
             font-weight: 600;
             letter-spacing: 1px;
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
         }
 
         .nav-links {
@@ -119,6 +125,7 @@
             border: none;
             cursor: pointer;
             box-shadow: 0 4px 10px rgba(229, 57, 53, 0.3);
+            white-space: nowrap;
         }
 
         .cta-button:hover {
@@ -129,10 +136,10 @@
         /* Hero Section with Video Background */
         .hero {
             position: relative;
-            padding: 100px 0;
+            padding: 80px 0;
             text-align: center;
             overflow: hidden;
-            height: 80vh;
+            min-height: 80vh;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -166,10 +173,11 @@
             z-index: 2;
             max-width: 800px;
             padding: 0 20px;
+            width: 100%;
         }
 
         .hero h1 {
-            font-size: 3.5rem;
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
             margin-bottom: 20px;
             background: linear-gradient(135deg, var(--primary), var(--accent));
             -webkit-background-clip: text;
@@ -179,7 +187,7 @@
         }
 
         .hero p {
-            font-size: 1.2rem;
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
             margin: 0 auto 40px;
             color: var(--text-light);
             max-width: 700px;
@@ -187,17 +195,17 @@
 
         /* Terminal Section */
         .terminal-section {
-            padding: 80px 0;
+            padding: 60px 0;
             background: var(--bg-light);
         }
 
         .section-title {
             text-align: center;
-            margin-bottom: 50px;
+            margin-bottom: 40px;
         }
 
         .section-title h2 {
-            font-size: 2.5rem;
+            font-size: clamp(2rem, 4vw, 2.5rem);
             color: var(--primary);
             margin-bottom: 15px;
         }
@@ -206,6 +214,7 @@
             max-width: 600px;
             margin: 0 auto;
             color: var(--text);
+            padding: 0 15px;
         }
 
         .terminal-container {
@@ -254,6 +263,7 @@
             text-align: center;
             color: var(--text);
             font-weight: 500;
+            font-size: 0.9rem;
         }
 
         .terminal-body {
@@ -292,6 +302,7 @@
         .output-line {
             margin: 8px 0;
             line-height: 1.5;
+            word-break: break-word;
         }
 
         .output-line.system {
@@ -308,7 +319,7 @@
 
         /* Features Section */
         .features {
-            padding: 80px 0;
+            padding: 60px 0;
             background: var(--bg);
         }
 
@@ -316,12 +327,12 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 30px;
-            margin-top: 50px;
+            margin-top: 40px;
         }
 
         .feature-card {
             background: var(--bg-light);
-            padding: 30px;
+            padding: 25px;
             border-radius: 10px;
             border: 1px solid rgba(229, 57, 53, 0.2);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -347,7 +358,7 @@
 
         /* Models Section */
         .models {
-            padding: 80px 0;
+            padding: 60px 0;
             background: var(--bg-light);
         }
 
@@ -355,7 +366,7 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 25px;
-            margin-top: 50px;
+            margin-top: 40px;
         }
 
         .model-card {
@@ -400,13 +411,13 @@
 
         /* Setup Section */
         .setup {
-            padding: 80px 0;
+            padding: 60px 0;
             background: var(--bg);
         }
 
         .setup-steps {
             max-width: 700px;
-            margin: 50px auto 0;
+            margin: 40px auto 0;
         }
 
         .setup-step {
@@ -447,7 +458,7 @@
         /* Footer */
         footer {
             background: #0a0e14;
-            padding: 60px 0 30px;
+            padding: 50px 0 25px;
             border-top: 1px solid rgba(229, 57, 53, 0.2);
         }
 
@@ -515,41 +526,171 @@
             font-size: 0.9rem;
         }
 
+        /* Mobile Menu */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 24px;
+            cursor: pointer;
+        }
+
         /* Responsive Design */
+        @media (max-width: 1024px) {
+            .container {
+                padding: 0 15px;
+            }
+        }
+
         @media (max-width: 768px) {
             .header-content {
-                flex-direction: column;
-                gap: 20px;
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+
+            .logo {
+                flex: 1;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            .nav {
+                width: 100%;
+                display: none;
+            }
+
+            .nav.active {
+                display: block;
             }
 
             .nav-links {
+                flex-direction: column;
+                gap: 15px;
+                padding: 20px 0;
+                width: 100%;
+            }
+
+            .nav-links a {
+                padding: 10px 0;
+                display: block;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            .cta-button {
+                width: 100%;
+                text-align: center;
+                margin-top: 10px;
+            }
+
+            .hero {
+                padding: 60px 0;
+                min-height: 70vh;
+            }
+
+            .terminal-section, 
+            .features, 
+            .models, 
+            .setup {
+                padding: 40px 0;
+            }
+
+            .terminal-body {
+                height: 350px;
+                padding: 15px;
+            }
+
+            .terminal-header {
+                padding: 12px 15px;
+            }
+
+            .features-grid,
+            .models-grid {
                 gap: 20px;
             }
 
-            .hero h1 {
-                font-size: 2.5rem;
+            .feature-card,
+            .model-card {
+                padding: 20px;
             }
-            
+
+            .setup-step {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .step-number {
+                margin-right: 0;
+            }
+
+            .footer-content {
+                gap: 30px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            .header-content {
+                padding: 10px 0;
+            }
+
+            .logo-text {
+                font-size: 20px;
+            }
+
+            .logo-icon {
+                font-size: 24px;
+            }
+
             .hero {
-                height: 60vh;
+                padding: 40px 0;
+                min-height: 60vh;
             }
 
             .terminal-body {
                 height: 300px;
+                padding: 10px;
             }
-        }
-        
-        @media (max-width: 480px) {
-            .hero {
-                height: 50vh;
+
+            .terminal-header {
+                padding: 10px;
             }
-            
-            .hero h1 {
-                font-size: 2rem;
+
+            .terminal-title {
+                font-size: 0.8rem;
             }
-            
-            .hero p {
-                font-size: 1rem;
+
+            .features-grid,
+            .models-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .feature-card,
+            .model-card {
+                padding: 15px;
+            }
+
+            .feature-icon {
+                font-size: 32px;
+            }
+
+            .model-icon {
+                font-size: 28px;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+
+            .code-block {
+                padding: 12px;
+                font-size: 0.9rem;
             }
         }
 
@@ -581,16 +722,19 @@
                     <div class="logo-text">Patch AI</div>
                 </a>
 
-                <nav class="nav">
+                <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+
+                <nav class="nav" id="nav">
                     <div class="nav-links">
                         <a href="#features">Features</a>
                         <a href="#models">Models</a>
                         <a href="#setup">Setup</a>
                         <a href="#terminal">Try Demo</a>
                     </div>
+                    <a href="#setup" class="cta-button">Get Started</a>
                 </nav>
-
-                <a href="#setup" class="cta-button">Get Started</a>
             </div>
         </div>
     </header>
@@ -868,6 +1012,13 @@
         document.addEventListener('DOMContentLoaded', function() {
             const terminalBody = document.getElementById('terminalBody');
             const commandInput = document.getElementById('commandInput');
+            const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+            const nav = document.getElementById('nav');
+            
+            // Mobile menu toggle
+            mobileMenuToggle.addEventListener('click', function() {
+                nav.classList.toggle('active');
+            });
             
             // Command history and responses
             const commandHistory = [];
@@ -1009,6 +1160,14 @@ Type 'memory view' to see current session memory.`,
             // Focus on input when clicking anywhere in terminal
             terminalBody.addEventListener('click', function() {
                 commandInput.focus();
+            });
+            
+            // Close mobile menu when clicking on a link
+            const navLinks = document.querySelectorAll('.nav-links a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    nav.classList.remove('active');
+                });
             });
         });
     </script>
