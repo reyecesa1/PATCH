@@ -146,6 +146,14 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s ease, transform 1s ease;
+        }
+
+        .hero.loaded {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .hero-video {
@@ -755,14 +763,14 @@
                         <a href="#setup">Setup</a>
                         <a href="#terminal">Try Demo</a>
                     </div>
-                    <a href="#setup" class="cta-button">Get Started</a>
+                    <a href="https://nerdspace-hub-cr.vercel.app" class="cta-button" target="_blank">NerdSpace</a>
                 </nav>
             </div>
         </div>
     </header>
 
     <!-- Hero Section with Video Background - FIXED CENTERING -->
-    <section class="hero">
+    <section class="hero" id="hero">
         <video autoplay muted loop playsinline class="hero-video">
             <source src="patch.mp4" type="video/mp4">
             Your browser does not support the video tag.
@@ -803,7 +811,7 @@
                     </div>
                     <div class="command-line">
                         <span class="prompt">user@patch:~$</span>
-                        <input type="text" class="command-input" id="commandInput" autofocus>
+                        <input type="text" class="command-input" id="commandInput">
                         <span class="cursor"></span>
                     </div>
                 </div>
@@ -1035,6 +1043,15 @@
             const commandInput = document.getElementById('commandInput');
             const mobileMenuToggle = document.getElementById('mobileMenuToggle');
             const nav = document.getElementById('nav');
+            const hero = document.getElementById('hero');
+            
+            // Scroll to top on page load
+            window.scrollTo(0, 0);
+            
+            // Add loaded class to hero section after a short delay
+            setTimeout(() => {
+                hero.classList.add('loaded');
+            }, 300);
             
             // Mobile menu toggle
             mobileMenuToggle.addEventListener('click', function() {
