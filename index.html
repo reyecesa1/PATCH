@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Patch AI Console | Lightweight AI Assistant</title>
+    <title>PATCH AI | On The Go, Sir?</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
@@ -738,6 +738,57 @@
             margin-left: 5px;
             animation: blink 1s infinite;
         }
+
+        /* Typewriter effect */
+        .typewriter {
+            overflow: hidden;
+            border-right: 2px solid var(--primary);
+            white-space: nowrap;
+            margin: 0 auto;
+            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--primary) }
+        }
+
+        /* Loading animations */
+        .loading-dots:after {
+            content: ' .';
+            animation: dots 1.5s steps(5, end) infinite;
+        }
+
+        @keyframes dots {
+            0%, 20% { color: rgba(0,0,0,0); text-shadow: .25em 0 0 rgba(0,0,0,0), .5em 0 0 rgba(0,0,0,0); }
+            40% { color: var(--primary); text-shadow: .25em 0 0 rgba(0,0,0,0), .5em 0 0 rgba(0,0,0,0); }
+            60% { text-shadow: .25em 0 0 var(--primary), .5em 0 0 rgba(0,0,0,0); }
+            80%, 100% { text-shadow: .25em 0 0 var(--primary), .5em 0 0 var(--primary); }
+        }
+
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        .slide-up {
+            transform: translateY(20px);
+            opacity: 0;
+            animation: slideUp 0.5s ease forwards;
+        }
+
+        @keyframes slideUp {
+            to { transform: translateY(0); opacity: 1; }
+        }
     </style>
 </head>
 <body>
@@ -749,7 +800,7 @@
                     <div class="logo-icon">
                         <i class="fas fa-terminal"></i>
                     </div>
-                    <div class="logo-text">Patch AI</div>
+                    <div class="logo-text">PATCH AI</div>
                 </a>
 
                 <button class="mobile-menu-toggle" id="mobileMenuToggle">
@@ -759,8 +810,8 @@
                 <nav class="nav" id="nav">
                     <div class="nav-links">
                         <a href="#features">Features</a>
-                        <a href="#models">Models</a>
-                        <a href="#setup">Setup</a>
+                        <a href="#models">How It Works</a>
+                        <a href="#setup">Get Started</a>
                         <a href="#terminal">Try Demo</a>
                     </div>
                     <a href="https://nerdspace-hub-cr.vercel.app" class="cta-button" target="_blank">NerdSpace</a>
@@ -778,8 +829,8 @@
         <div class="hero-overlay"></div>
         <!-- Removed container wrapper for perfect centering -->
         <div class="hero-content">
-            <h1>Patch AI Console</h1>
-            <p>A lightweight, efficient AI console designed for developers and power users. Experience the power of local AI with minimal resource consumption.</p>
+            <h1>PATCH: On The Go, Sir?</h1>
+            <p>Your lightweight AI companion for adventures offline. Never be without help, even in the most remote places.</p>
             <a href="#terminal" class="cta-button">Try Live Demo</a>
         </div>
     </section>
@@ -789,7 +840,7 @@
         <div class="container">
             <div class="section-title">
                 <h2>Interactive Demo</h2>
-                <p>Experience Patch AI Console right in your browser. Type commands below to interact with the simulated AI.</p>
+                <p>Experience PATCH AI right in your browser. Type "start" below to begin the demo.</p>
             </div>
 
             <div class="terminal-container">
@@ -803,11 +854,11 @@
                 </div>
                 <div class="terminal-body" id="terminalBody">
                     <div class="terminal-output">
-                        <div class="output-line system">Patch AI Console v1.0.3</div>
+                        <div class="output-line system">PATCH AI Console v1.0.3</div>
                         <div class="output-line system">Initializing systems...</div>
-                        <div class="output-line system">Memory module loaded</div>
-                        <div class="output-line system">Model registry active</div>
-                        <div class="output-line success">System ready. Type 'help' for available commands.</div>
+                        <div class="output-line system">Offline mode activated</div>
+                        <div class="output-line system">Memory systems loaded</div>
+                        <div class="output-line success">System ready. Type 'start' to begin the demo.</div>
                     </div>
                     <div class="command-line">
                         <span class="prompt">user@patch:~$</span>
@@ -823,49 +874,41 @@
     <section class="features" id="features">
         <div class="container">
             <div class="section-title">
-                <h2>Core Features</h2>
-                <p>Patch is designed for efficiency and ease of use, with powerful capabilities.</p>
+                <h2>Why PATCH Is Perfect For Adventures</h2>
+                <p>PATCH is designed specifically for people on the move who can't always rely on internet connections.</p>
             </div>
 
             <div class="features-grid">
                 <div class="feature-card">
                     <div class="feature-icon">
-                        <i class="fas fa-bolt"></i>
+                        <i class="fas fa-wifi-slash"></i>
+                    </div>
+                    <h3>Works Completely Offline</h3>
+                    <p>No internet? No problem! PATCH runs entirely on your device, so you can use it anywhere - from mountain tops to remote forests.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-weight"></i>
                     </div>
                     <h3>Lightweight & Fast</h3>
-                    <p>Optimized for minimal resource consumption with rapid response times. Runs efficiently on standard hardware.</p>
+                    <p>PATCH is designed to be small and efficient, so it doesn't drain your battery or slow down your device while you're traveling.</p>
                 </div>
 
                 <div class="feature-card">
                     <div class="feature-icon">
-                        <i class="fas fa-brain"></i>
+                        <i class="fas fa-history"></i>
                     </div>
-                    <h3>Multi-Model Support</h3>
-                    <p>Switch between different AI models based on your needs - from fast responses to complex reasoning tasks.</p>
+                    <h3>Remembers Everything</h3>
+                    <p>PATCH keeps track of your conversations, notes, and preferences, so it gets better at helping you the more you use it.</p>
                 </div>
 
                 <div class="feature-card">
                     <div class="feature-icon">
-                        <i class="fas fa-memory"></i>
+                        <i class="fas fa-hiking"></i>
                     </div>
-                    <h3>Session Memory</h3>
-                    <p>Maintains context across conversations with categorized memory storage (MOOD, GOAL, NOTE, REFLECTION).</p>
-                </div>
-
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-code"></i>
-                    </div>
-                    <h3>Developer Friendly</h3>
-                    <p>Simple setup with clear documentation. Easy to extend and customize for your specific use cases.</p>
-                </div>
-
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-plug"></i>
-                    </div>
-                    <h3>Cross-Platform</h3>
-                    <p>Runs on Windows, macOS, and Linux. Synchronize your environment across multiple devices.</p>
+                    <h3>Adventure-Ready</h3>
+                    <p>Whether you're planning routes, identifying plants, or just need travel advice, PATCH is your perfect hiking companion.</p>
                 </div>
 
                 <div class="feature-card">
@@ -873,7 +916,15 @@
                         <i class="fas fa-shield-alt"></i>
                     </div>
                     <h3>Privacy Focused</h3>
-                    <p>All processing happens locally on your machine. Your data never leaves your control.</p>
+                    <p>Since everything happens on your device, your conversations and data stay private - no one else can access them.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3>Quick Setup</h3>
+                    <p>Get PATCH running in minutes, not hours. Simple installation means you can start using it right away.</p>
                 </div>
             </div>
         </div>
@@ -883,8 +934,8 @@
     <section class="models" id="models">
         <div class="container">
             <div class="section-title">
-                <h2>AI Models</h2>
-                <p>Patch supports multiple AI models, each optimized for different use cases.</p>
+                <h2>How PATCH Works</h2>
+                <p>PATCH uses lightweight AI models that are perfect for offline use on portable devices.</p>
             </div>
 
             <div class="models-grid">
@@ -892,36 +943,36 @@
                     <div class="model-icon">
                         <i class="fas fa-feather"></i>
                     </div>
-                    <h3>TinyLlama</h3>
-                    <p>Fast and efficient model perfect for everyday tasks and quick responses.</p>
-                    <div class="model-status status-online">Default</div>
+                    <h3>TinyLlama - The Lightweight</h3>
+                    <p>Super small and fast, perfect for quick answers and everyday tasks when you're on the move.</p>
+                    <div class="model-status status-online">Default Model</div>
                 </div>
 
                 <div class="model-card">
                     <div class="model-icon">
                         <i class="fas fa-robot"></i>
                     </div>
-                    <h3>SmollM2</h3>
-                    <p>Balanced model offering good performance with reasonable resource usage.</p>
+                    <h3>SmollM2 - The Balanced</h3>
+                    <p>A bit more powerful but still lightweight, great for when you need more detailed answers.</p>
                     <div class="model-status status-online">Available</div>
                 </div>
 
                 <div class="model-card">
                     <div class="model-icon">
-                        <i class="fas fa-cogs"></i>
+                        <i class="fas fa-brain"></i>
                     </div>
-                    <h3>DeepSeek</h3>
-                    <p>Advanced model for complex reasoning tasks and detailed analysis.</p>
+                    <h3>DeepSeek - The Thinker</h3>
+                    <p>For when you need deep thinking and complex problem-solving on your adventures.</p>
                     <div class="model-status status-online">Available</div>
                 </div>
 
                 <div class="model-card">
                     <div class="model-icon">
-                        <i class="fas fa-plus"></i>
+                        <i class="fas fa-memory"></i>
                     </div>
-                    <h3>Custom Models</h3>
-                    <p>Add your own models or fine-tuned versions for specialized tasks.</p>
-                    <div class="model-status status-online">Expandable</div>
+                    <h3>Smart Memory System</h3>
+                    <p>PATCH remembers your preferences, past conversations, and what you've learned together.</p>
+                    <div class="model-status status-online">Always Learning</div>
                 </div>
             </div>
         </div>
@@ -931,8 +982,8 @@
     <section class="setup" id="setup">
         <div class="container">
             <div class="section-title">
-                <h2>Quick Setup</h2>
-                <p>Get Patch AI Console running on your system in minutes.</p>
+                <h2>Get PATCH Ready For Your Next Adventure</h2>
+                <p>Setting up PATCH is quick and easy - you'll be ready for your next trip in no time.</p>
             </div>
 
             <div class="setup-steps">
@@ -940,12 +991,9 @@
                     <div class="step-number">1</div>
                     <div class="step-content">
                         <h3>Install Ollama</h3>
-                        <p>First, install Ollama on your system to manage AI models.</p>
+                        <p>Ollama is the engine that runs AI models on your computer. It's free and easy to install.</p>
                         <div class="code-block">
-                            <code># On macOS<br>brew install ollama</code>
-                        </div>
-                        <div class="code-block">
-                            <code># On Linux<br>curl -fsSL https://ollama.ai/install.sh | sh</code>
+                            <code># Download from https://ollama.ai<br># Choose your operating system and install</code>
                         </div>
                     </div>
                 </div>
@@ -953,21 +1001,22 @@
                 <div class="setup-step">
                     <div class="step-number">2</div>
                     <div class="step-content">
-                        <h3>Download Patch</h3>
-                        <p>Download the Patch AI Console script to your preferred directory.</p>
+                        <h3>Download PATCH's Brain</h3>
+                        <p>Once Ollama is installed, download the lightweight AI model that powers PATCH.</p>
                         <div class="code-block">
-                            <code>curl -o patch-console.sh https://patch.ai/download/patch-console.sh</code>
+                            <code># Open terminal/command prompt and run:<br>ollama pull tinyllama</code>
                         </div>
+                        <p>This only takes a few minutes and downloads everything PATCH needs to work offline.</p>
                     </div>
                 </div>
 
                 <div class="setup-step">
                     <div class="step-number">3</div>
                     <div class="step-content">
-                        <h3>Run Patch</h3>
-                        <p>Make the script executable and run it to start the console.</p>
+                        <h3>Get the PATCH Interface</h3>
+                        <p>Download the PATCH console that gives you the cool terminal interface to interact with.</p>
                         <div class="code-block">
-                            <code>chmod +x patch-console.sh<br>./patch-console.sh</code>
+                            <code># Download from our website<br># This gives you the adventure-ready interface</code>
                         </div>
                     </div>
                 </div>
@@ -975,11 +1024,12 @@
                 <div class="setup-step">
                     <div class="step-number">4</div>
                     <div class="step-content">
-                        <h3>Start Using</h3>
-                        <p>Begin interacting with Patch. Type 'help' to see available commands.</p>
+                        <h3>Start Your Adventure!</h3>
+                        <p>Run PATCH and start having conversations with your new AI hiking companion.</p>
                         <div class="code-block">
-                            <code>user@patch:~$ help</code>
+                            <code># Double-click the PATCH icon<br># Or run: ./patch-console</code>
                         </div>
+                        <p>That's it! You're now ready to take PATCH on your next adventure.</p>
                     </div>
                 </div>
             </div>
@@ -991,8 +1041,8 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-column">
-                    <h3>Patch AI</h3>
-                    <p>A lightweight, efficient AI console for developers and power users.</p>
+                    <h3>PATCH AI</h3>
+                    <p>Your lightweight AI companion for adventures offline. Never be without help, even in the most remote places.</p>
                     <div class="social-links">
                         <a href="#" class="social-link"><i class="fab fa-github"></i></a>
                         <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
@@ -1001,12 +1051,12 @@
                 </div>
 
                 <div class="footer-column">
-                    <h3>Resources</h3>
+                    <h3>Learn More</h3>
                     <ul class="footer-links">
-                        <li><a href="#">Documentation</a></li>
-                        <li><a href="#">Tutorials</a></li>
-                        <li><a href="#">API Reference</a></li>
-                        <li><a href="#">Community</a></li>
+                        <li><a href="#">Adventure Guides</a></li>
+                        <li><a href="#">Travel Tips</a></li>
+                        <li><a href="#">Offline Usage</a></li>
+                        <li><a href="#">Community Stories</a></li>
                     </ul>
                 </div>
 
@@ -1016,7 +1066,7 @@
                         <li><a href="#">Windows</a></li>
                         <li><a href="#">macOS</a></li>
                         <li><a href="#">Linux</a></li>
-                        <li><a href="#">Docker</a></li>
+                        <li><a href="#">Mobile (Coming Soon)</a></li>
                     </ul>
                 </div>
 
@@ -1025,14 +1075,14 @@
                     <ul class="footer-links">
                         <li><a href="#">GitHub</a></li>
                         <li><a href="#">Twitter</a></li>
-                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Adventure Community</a></li>
                         <li><a href="#">Contact</a></li>
                     </ul>
                 </div>
             </div>
 
             <div class="footer-bottom">
-                <p>&copy; 2025 Patch AI Console. Created with ❤️ by Cesar Reyes.</p>
+                <p>&copy; 2025 PATCH AI Console. Created with ❤️ by Cesar Reyes.</p>
             </div>
         </div>
     </footer>
@@ -1061,71 +1111,47 @@
             // Command history and responses
             const commandHistory = [];
             let historyIndex = -1;
+            let demoStarted = false;
             
             // Available commands and responses
             const commands = {
+                'start': '',
                 'help': `Available commands:
+  start - Begin the PATCH demo experience
   help - Show this help message
-  about - Information about Patch AI
-  models - List available AI models
-  memory - Show memory system info
-  clear - Clear the terminal
-  exit - Exit the console (in desktop version)`,
+  about - Learn about PATCH
+  how - How PATCH works in simple terms
+  clear - Clear the terminal`,
                 
-                'about': `Patch AI Console v1.0.3
-A lightweight, efficient AI console for developers.
+                'about': `PATCH: On The Go, Sir?
   
-Features:
-  - Multi-model AI support (TinyLlama, SmollM2, DeepSeek)
-  - Session memory with categorization
-  - Cross-platform compatibility
-  - Minimal resource consumption
-  - Privacy-focused local processing`,
+PATCH is your lightweight AI companion designed for adventures:
+  - Works completely offline - no internet needed!
+  - Small and efficient - doesn't drain your battery
+  - Remembers your conversations and preferences
+  - Perfect for hikers, travelers, and anyone on the move
+  
+Whether you're in the mountains, forests, or anywhere without signal, PATCH has your back.`,
                 
-                'models': `Available AI Models:
+                'how': `Here's how PATCH works in simple terms:
   
-1. TinyLlama (default)
-   - Fast and lightweight
-   - Perfect for everyday tasks
-   - Low resource requirements
+PATCH is like having a smart friend in your pocket that:
+  - Doesn't need internet to work
+  - Remembers what you talk about
+  - Gets better at helping you over time
+  - Is small enough to run on your laptop or phone
   
-2. SmollM2
-   - Balanced performance
-   - Good for general purpose use
-   - Moderate resource usage
+It's perfect for when you're hiking, traveling, or just away from good internet connections!
   
-3. DeepSeek
-   - Advanced reasoning capabilities
-   - Best for complex tasks
-   - Higher resource requirements`,
-                
-                'memory': `Memory System:
-  
-Patch maintains conversation context with categorized memory:
-  
-  [MOOD] - Emotional state and preferences
-  [GOAL] - Current objectives and tasks
-  [NOTE] - Important information and facts
-  [FEEDBACK] - System performance notes
-  [REFLECTION] - Learning and improvement insights
-  
-Type 'memory view' to see current session memory.`,
-                
-                'memory view': `Current Session Memory:
-  
-[GOAL] Demonstrate Patch AI Console capabilities
-[NOTE] User is interacting with web demo version
-[REFLECTION] System responding well to command inputs`,
+Type 'start' to see PATCH in action!`,
                 
                 'clear': '', // Special case - handled separately
-                
-                'exit': 'This is a web demo. In the desktop version, this would exit the console.',
                 
                 '': '' // Handle empty input
             };
             
             // Default response for unknown commands
-            const defaultResponse = "Command not recognized. Type 'help' for available commands.";
+            const defaultResponse = "Hmm, I don't recognize that command. Type 'help' to see what you can do, or 'start' to begin the demo!";
             
             // Function to add output to terminal
             function addOutput(text, className = '') {
@@ -1134,6 +1160,41 @@ Type 'memory view' to see current session memory.`,
                 outputLine.textContent = text;
                 terminalBody.insertBefore(outputLine, terminalBody.lastElementChild);
                 terminalBody.scrollTop = terminalBody.scrollHeight;
+            }
+            
+            // Function to type text with a typewriter effect
+            function typeText(text, className = '', speed = 30, callback = null) {
+                const outputLine = document.createElement('div');
+                outputLine.className = `output-line ${className}`;
+                terminalBody.insertBefore(outputLine, terminalBody.lastElementChild);
+                
+                let i = 0;
+                function typeChar() {
+                    if (i < text.length) {
+                        outputLine.textContent += text.charAt(i);
+                        i++;
+                        setTimeout(typeChar, speed);
+                        terminalBody.scrollTop = terminalBody.scrollHeight;
+                    } else if (callback) {
+                        callback();
+                    }
+                }
+                typeChar();
+            }
+            
+            // Function to show loading animation
+            function showLoading(text, duration = 1500, callback = null) {
+                const outputLine = document.createElement('div');
+                outputLine.className = 'output-line system';
+                outputLine.textContent = text;
+                outputLine.classList.add('loading-dots');
+                terminalBody.insertBefore(outputLine, terminalBody.lastElementChild);
+                terminalBody.scrollTop = terminalBody.scrollHeight;
+                
+                setTimeout(() => {
+                    outputLine.classList.remove('loading-dots');
+                    if (callback) callback();
+                }, duration);
             }
             
             // Function to process commands
@@ -1150,6 +1211,117 @@ Type 'memory view' to see current session memory.`,
                     // Clear terminal except the last command line
                     const outputLines = document.querySelectorAll('.output-line');
                     outputLines.forEach(line => line.remove());
+                    return;
+                }
+                
+                // Handle start command (demo)
+                if (command === 'start' && !demoStarted) {
+                    demoStarted = true;
+                    
+                    // Clear terminal
+                    const outputLines = document.querySelectorAll('.output-line');
+                    outputLines.forEach(line => line.remove());
+                    
+                    // Start demo sequence
+                    setTimeout(() => {
+                        addOutput("Starting PATCH demo...", "system");
+                        
+                        setTimeout(() => {
+                            showLoading("Activating offline mode", 1200, () => {
+                                setTimeout(() => {
+                                    showLoading("Loading lightweight AI model", 1200, () => {
+                                        setTimeout(() => {
+                                            showLoading("Initializing memory systems", 1200, () => {
+                                                setTimeout(() => {
+                                                    addOutput("All systems ready!", "success");
+                                                    
+                                                    setTimeout(() => {
+                                                        typeText("Hey there! I'm PATCH.", "system", 40, () => {
+                                                            setTimeout(() => {
+                                                                typeText("Think of me as your adventure buddy that lives in your pocket.", "", 40, () => {
+                                                                    setTimeout(() => {
+                                                                        typeText("", "", 40, () => {
+                                                                            setTimeout(() => {
+                                                                                typeText("Here's what makes me special:", "", 30, () => {
+                                                                                    setTimeout(() => {
+                                                                                        typeText("", "", 30, () => {
+                                                                                            setTimeout(() => {
+                                                                                                typeText("• I work COMPLETELY OFFLINE - no internet needed!", "", 30, () => {
+                                                                                                    setTimeout(() => {
+                                                                                                        typeText("• I'm lightweight and fast - won't drain your battery", "", 30, () => {
+                                                                                                            setTimeout(() => {
+                                                                                                                typeText("• I remember our chats - so I get better at helping you", "", 30, () => {
+                                                                                                                    setTimeout(() => {
+                                                                                                                        typeText("", "", 30, () => {
+                                                                                                                            setTimeout(() => {
+                                                                                                                                typeText("Whether you're:", "", 40, () => {
+                                                                                                                                    setTimeout(() => {
+                                                                                                                                        typeText("- Hiking in the mountains", "", 30, () => {
+                                                                                                                                            setTimeout(() => {
+                                                                                                                                                typeText("- Traveling in remote areas", "", 30, () => {
+                                                                                                                                                    setTimeout(() => {
+                                                                                                                                                        typeText("- Just somewhere with bad signal", "", 30, () => {
+                                                                                                                                                            setTimeout(() => {
+                                                                                                                                                                typeText("", "", 30, () => {
+                                                                                                                                                                    setTimeout(() => {
+                                                                                                                                                                        typeText("I'll be there to help with directions, information, or just conversation.", "", 40, () => {
+                                                                                                                                                                            setTimeout(() => {
+                                                                                                                                                                                typeText("", "", 40, () => {
+                                                                                                                                                                                    setTimeout(() => {
+                                                                                                                                                                                        typeText("I'm your reliable companion when you're off the grid.", "system", 60, () => {
+                                                                                                                                                                                            setTimeout(() => {
+                                                                                                                                                                                                typeText("", "", 60, () => {
+                                                                                                                                                                                                    setTimeout(() => {
+                                                                                                                                                                                                        addOutput("Demo completed. Type 'about' to learn more or 'how' to understand how I work!", "success");
+                                                                                                                                                                                                    }, 500);
+                                                                                                                                                                                                });
+                                                                                                                                                                                            }, 500);
+                                                                                                                                                                                        });
+                                                                                                                                                                                    }, 500);
+                                                                                                                                                                                });
+                                                                                                                                                                            }, 500);
+                                                                                                                                                                        });
+                                                                                                                                                                    }, 500);
+                                                                                                                                                                });
+                                                                                                                                                            }, 500);
+                                                                                                                                                        });
+                                                                                                                                                    }, 500);
+                                                                                                                                                });
+                                                                                                                                            }, 500);
+                                                                                                                                        });
+                                                                                                                                    }, 500);
+                                                                                                                                });
+                                                                                                                            }, 500);
+                                                                                                                        });
+                                                                                                                    }, 500);
+                                                                                                                });
+                                                                                                            }, 500);
+                                                                                                        });
+                                                                                                    }, 500);
+                                                                                                });
+                                                                                            }, 500);
+                                                                                        });
+                                                                                    }, 500);
+                                                                                });
+                                                                            }, 500);
+                                                                        });
+                                                                    }, 500);
+                                                                });
+                                                            }, 500);
+                                                        });
+                                                    }, 1000);
+                                                }, 500);
+                                            });
+                                        }, 500);
+                                    });
+                                }, 500);
+                            });
+                        }, 500);
+                    }, 500);
+                    
+                    return;
+                } else if (command === 'start' && demoStarted) {
+                    addOutput("Demo already running! Type 'clear' to reset the terminal.", "system");
                     return;
                 }
                 
