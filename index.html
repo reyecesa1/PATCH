@@ -860,7 +860,7 @@
 
     <!-- Terminal Section with Woods Video Background -->
     <section class="terminal-section" id="terminal">
-        <video autoplay muted loop playsinline class="terminal-video" id="woodsVideo">
+        <video autoplay muted loop playsinline class="terminal-video">
             <source src="woods.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
@@ -1122,7 +1122,6 @@
             const mobileMenuToggle = document.getElementById('mobileMenuToggle');
             const nav = document.getElementById('nav');
             const hero = document.getElementById('hero');
-            const woodsVideo = document.getElementById('woodsVideo');
             
             // Scroll to top on page load
             window.scrollTo(0, 0);
@@ -1131,19 +1130,6 @@
             setTimeout(() => {
                 hero.classList.add('loaded');
             }, 300);
-            
-            // Ensure woods video plays correctly
-            woodsVideo.addEventListener('loadeddata', function() {
-                console.log('Woods video loaded successfully');
-            });
-            
-            woodsVideo.addEventListener('error', function() {
-                console.error('Error loading woods.mp4 video');
-                // Fallback: set a background image instead
-                document.querySelector('.terminal-section').style.backgroundImage = 'linear-gradient(rgba(15, 23, 32, 0.8), rgba(15, 23, 32, 0.8)), url("https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80")';
-                document.querySelector('.terminal-section').style.backgroundSize = 'cover';
-                document.querySelector('.terminal-section').style.backgroundPosition = 'center';
-            });
             
             // Mobile menu toggle
             mobileMenuToggle.addEventListener('click', function() {
