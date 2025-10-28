@@ -203,25 +203,15 @@
             max-width: 700px;
         }
 
-        /* Terminal Section with Woods Video Background */
+        /* Terminal Section with Site Background */
         .terminal-section {
             position: relative;
             padding: 60px 0;
             overflow: hidden;
-            background: var(--bg-light); /* Fallback background */
+            background: linear-gradient(135deg, var(--bg) 0%, #0c0c0c 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
-        }
-
-        .terminal-video {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: -2;
         }
 
         .terminal-overlay {
@@ -858,12 +848,8 @@
         </div>
     </section>
 
-    <!-- Terminal Section with Woods Video Background -->
+    <!-- Terminal Section with Site Background -->
     <section class="terminal-section" id="terminal">
-        <video autoplay muted loop playsinline class="terminal-video">
-            <source src="woods.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
         <div class="terminal-overlay"></div>
         <div class="container">
             <div class="section-title">
