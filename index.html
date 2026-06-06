@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PATCH AI | On The Go, Sir?</title>
+    <title>PATCH AI – Custom Terminal Interfaces for Ollama</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
@@ -74,7 +74,6 @@
         .logo-text {
             font-size: 22px;
             font-weight: 600;
-            letter-spacing: 0.5px;
         }
 
         .nav {
@@ -101,21 +100,6 @@
             color: var(--primary);
         }
 
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--primary);
-            transition: width 0.3s ease;
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
         .cta-button {
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
@@ -136,24 +120,16 @@
             box-shadow: 0 6px 20px rgba(229, 57, 53, 0.4);
         }
 
-        /* Hero Section with Video Background - FIXED HEIGHT */
+        /* Hero */
         .hero {
             position: relative;
-            padding: 80px 20px;
+            padding: 100px 20px;
             text-align: center;
             overflow: hidden;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 1s ease, transform 1s ease;
-        }
-
-        .hero.loaded {
-            opacity: 1;
-            transform: translateY(0);
         }
 
         .hero-video {
@@ -172,7 +148,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(15, 23, 32, 0.7);
+            background: rgba(15, 23, 32, 0.8);
             z-index: -1;
         }
 
@@ -182,1230 +158,528 @@
             max-width: 800px;
             width: 100%;
             margin: 0 auto;
-            padding: 0;
-            text-align: center;
         }
 
         .hero h1 {
-            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-size: clamp(2.2rem, 5vw, 3.5rem);
             margin-bottom: 20px;
             background: linear-gradient(135deg, var(--primary), var(--accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            line-height: 1.2;
-            text-shadow: 0 0 20px rgba(229, 57, 53, 0.3);
         }
 
         .hero p {
             font-size: clamp(1rem, 2.5vw, 1.2rem);
-            margin: 0 auto 40px;
+            margin: 0 auto 30px;
             color: var(--text-light);
-            max-width: 700px;
         }
 
-        /* Terminal Section with Video Background */
-        .terminal-section {
-            position: relative;
-            padding: 60px 0;
-            overflow: hidden;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-        }
-
-        .terminal-video {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: -2;
-        }
-
-        .terminal-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(15, 23, 32, 0.85);
-            z-index: -1;
-        }
-
+        /* Section common */
         .section-title {
             text-align: center;
             margin-bottom: 40px;
         }
 
         .section-title h2 {
-            font-size: clamp(2rem, 4vw, 2.5rem);
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
             color: var(--primary);
             margin-bottom: 15px;
         }
 
-        .section-title p {
-            max-width: 600px;
-            margin: 0 auto;
-            color: var(--text);
-            padding: 0 15px;
+        /* Demo Showcase (replaces fake interactive terminal) */
+        .demo-showcase {
+            padding: 60px 0;
+            background: var(--bg);
         }
 
-        .terminal-container {
-            background: rgba(15, 23, 32, 0.85);
+        .demo-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .demo-terminal {
+            background: rgba(10, 14, 20, 0.9);
             border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
             border: 1px solid rgba(229, 57, 53, 0.3);
-            max-width: 900px;
-            margin: 0 auto;
-            backdrop-filter: blur(5px);
+            overflow: hidden;
         }
 
-        .terminal-header {
+        .demo-header {
             background: rgba(0, 0, 0, 0.4);
-            padding: 15px 20px;
+            padding: 12px 15px;
             display: flex;
             align-items: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
 
-        .terminal-buttons {
+        .demo-buttons {
             display: flex;
             gap: 8px;
         }
 
-        .terminal-button {
+        .demo-button {
             width: 12px;
             height: 12px;
             border-radius: 50%;
         }
+        .demo-button.red { background: #ff5f57; }
+        .demo-button.yellow { background: #ffbd2e; }
+        .demo-button.green { background: #28ca42; }
 
-        .terminal-button.close {
-            background: #ff5f57;
-        }
-
-        .terminal-button.minimize {
-            background: #ffbd2e;
-        }
-
-        .terminal-button.maximize {
-            background: #28ca42;
-        }
-
-        .terminal-title {
+        .demo-title {
             flex: 1;
             text-align: center;
             color: var(--text);
-            font-weight: 500;
+            font-size: 0.85rem;
+        }
+
+        .demo-body {
+            padding: 20px;
             font-size: 0.9rem;
         }
 
-        .terminal-body {
-            padding: 20px;
-            height: 400px;
-            overflow-y: auto;
-            background: rgba(10, 14, 20, 0.8);
-        }
-
-        .terminal-output {
-            margin-bottom: 15px;
-        }
-
-        .command-line {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .prompt {
-            color: var(--primary);
-            margin-right: 10px;
-            white-space: nowrap;
-        }
-
-        .command-input {
-            background: transparent;
-            border: none;
-            color: var(--text-light);
-            font-size: 16px;
-            flex: 1;
-            outline: none;
-            font-family: 'Source Code Pro', monospace;
-        }
-
-        .output-line {
+        .demo-body .line {
             margin: 8px 0;
-            line-height: 1.5;
-            word-break: break-word;
+            white-space: pre-wrap;
         }
 
-        .output-line.system {
+        .demo-body .prompt {
+            color: var(--primary);
+        }
+
+        .demo-highlight {
             color: var(--accent);
         }
 
-        .output-line.error {
-            color: var(--error);
+        .demo-text {
+            padding: 20px;
         }
 
-        .output-line.success {
-            color: var(--success);
+        .demo-text h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--text-light);
         }
 
-        /* Features Section */
+        .demo-text p {
+            margin-bottom: 20px;
+        }
+
+        /* Features (tailored to the service) */
         .features {
             padding: 60px 0;
-            background: var(--bg);
+            background: var(--bg-light);
         }
 
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 30px;
-            margin-top: 40px;
+            margin-top: 30px;
         }
 
         .feature-card {
-            background: var(--bg-light);
+            background: var(--bg);
             padding: 25px;
             border-radius: 10px;
-            border: 1px solid rgba(229, 57, 53, 0.2);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(229,57,53,0.2);
+            transition: transform 0.2s;
         }
 
         .feature-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(229, 57, 53, 0.2);
-            border-color: rgba(229, 57, 53, 0.4);
+            border-color: var(--accent);
         }
 
         .feature-icon {
-            font-size: 40px;
+            font-size: 2.5rem;
             color: var(--primary);
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .feature-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            color: var(--text-light);
-        }
-
-        /* Models Section */
-        .models {
-            padding: 60px 0;
-            background: var(--bg-light);
-        }
-
-        .models-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 25px;
-            margin-top: 40px;
-        }
-
-        .model-card {
-            background: var(--bg);
-            padding: 25px;
-            border-radius: 10px;
-            text-align: center;
-            border: 1px solid rgba(255, 82, 82, 0.2);
-            transition: all 0.3s ease;
-        }
-
-        .model-card:hover {
-            border-color: var(--accent);
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(229, 57, 53, 0.2);
-        }
-
-        .model-icon {
-            font-size: 36px;
-            color: var(--accent);
-            margin-bottom: 15px;
-        }
-
-        .model-card h3 {
             font-size: 1.3rem;
             margin-bottom: 10px;
             color: var(--text-light);
         }
 
-        .model-status {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            margin-top: 10px;
-        }
-
-        .status-online {
-            background: rgba(16, 185, 129, 0.2);
-            color: var(--success);
-        }
-
-        /* Setup Section */
-        .setup {
+        /* Pricing */
+        .pricing {
             padding: 60px 0;
             background: var(--bg);
         }
 
-        .setup-steps {
-            max-width: 700px;
-            margin: 40px auto 0;
-        }
-
-        .setup-step {
-            display: flex;
-            margin-bottom: 30px;
-            align-items: flex-start;
-        }
-
-        .step-number {
-            background: var(--primary);
-            color: white;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            margin-right: 20px;
-            flex-shrink: 0;
-            box-shadow: 0 4px 10px rgba(229, 57, 53, 0.3);
-        }
-
-        .step-content h3 {
-            margin-bottom: 10px;
-            color: var(--text-light);
-        }
-
-        .code-block {
-            background: #0a0e14;
-            padding: 15px;
-            border-radius: 6px;
-            margin: 15px 0;
-            border-left: 3px solid var(--primary);
-            overflow-x: auto;
-        }
-
-        /* Footer */
-        footer {
-            background: #0a0e14;
-            padding: 50px 0 25px;
-            border-top: 1px solid rgba(229, 57, 53, 0.2);
-        }
-
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px;
-            margin-bottom: 40px;
-        }
-
-        .footer-column h3 {
-            color: var(--primary);
-            margin-bottom: 20px;
-            font-size: 1.2rem;
-        }
-
-        .footer-links {
-            list-style: none;
-        }
-
-        .footer-links li {
-            margin-bottom: 10px;
-        }
-
-        .footer-links a {
-            color: var(--text);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .footer-links a:hover {
-            color: var(--primary);
-        }
-
-        .social-links {
-            display: flex;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .social-link {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: rgba(229, 57, 53, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary);
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-
-        .social-link:hover {
-            background: var(--primary);
-            color: white;
-            transform: translateY(-3px);
-        }
-
-        .footer-bottom {
+        .pricing-card {
+            max-width: 500px;
+            margin: 0 auto;
+            background: var(--bg-light);
+            border-radius: 12px;
+            border: 1px solid rgba(229,57,53,0.3);
+            padding: 30px;
             text-align: center;
-            padding-top: 30px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            color: var(--text);
-            font-size: 0.9rem;
         }
 
-        /* Mobile Menu */
+        .price {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin: 20px 0;
+        }
+
+        .price small {
+            font-size: 1rem;
+            color: var(--text);
+        }
+
+        .pricing-list {
+            list-style: none;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .pricing-list li {
+            margin: 10px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .pricing-list li:before {
+            content: "✓";
+            color: var(--success);
+            position: absolute;
+            left: 0;
+        }
+
+        /* Contact form */
+        .contact {
+            padding: 60px 0;
+            background: var(--bg-light);
+        }
+
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--bg);
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid rgba(229,57,53,0.3);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 6px;
+            color: var(--text);
+            font-family: 'Source Code Pro', monospace;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary);
+            border: none;
+            color: white;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        button[type="submit"]:hover {
+            background: var(--primary-dark);
+        }
+
+        .footer {
+            background: #0a0e14;
+            padding: 40px 0 20px;
+            text-align: center;
+            border-top: 1px solid rgba(229,57,53,0.2);
+        }
+
+        @media (max-width: 768px) {
+            .demo-grid {
+                grid-template-columns: 1fr;
+            }
+            .nav-links {
+                display: none;
+            }
+            .mobile-menu-toggle {
+                display: block;
+            }
+            .nav {
+                flex-direction: column;
+            }
+        }
         .mobile-menu-toggle {
             display: none;
             background: none;
             border: none;
             color: var(--text);
-            font-size: 20px;
+            font-size: 1.5rem;
             cursor: pointer;
-            padding: 5px;
-            border-radius: 4px;
-            transition: background-color 0.3s ease;
         }
-
-        .mobile-menu-toggle:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-
-        /* Responsive Design */
-        @media (max-width: 1024px) {
-            .container {
-                padding: 0 15px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .header-content {
-                flex-wrap: wrap;
-                gap: 12px;
-                padding: 10px 0;
-            }
-
-            .logo {
-                flex: 1;
-            }
-
-            .mobile-menu-toggle {
-                display: block;
-            }
-
-            .nav {
-                width: 100%;
-                display: none;
-                flex-direction: column;
-                gap: 0;
-            }
-
-            .nav.active {
-                display: flex;
-            }
-
-            .nav-links {
-                flex-direction: column;
-                gap: 0;
-                padding: 15px 0;
-                width: 100%;
-            }
-
-            .nav-links a {
-                padding: 12px 0;
-                display: block;
-                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-                font-size: 1rem;
-            }
-
-            .nav-links a:last-child {
-                border-bottom: none;
-            }
-
-            .cta-button {
-                width: 100%;
-                text-align: center;
-                margin-top: 15px;
-                padding: 10px 18px;
-                font-size: 1rem;
-            }
-
-            .hero {
-                padding: 60px 15px;
-                min-height: 100vh;
-            }
-
-            .terminal-section, 
-            .features, 
-            .models, 
-            .setup {
-                padding: 40px 0;
-            }
-
-            .terminal-body {
-                height: 350px;
-                padding: 15px;
-            }
-
-            .terminal-header {
-                padding: 12px 15px;
-            }
-
-            .features-grid,
-            .models-grid {
-                gap: 20px;
-            }
-
-            .feature-card,
-            .model-card {
-                padding: 20px;
-            }
-
-            .setup-step {
-                flex-direction: column;
-                gap: 15px;
-            }
-
-            .step-number {
-                margin-right: 0;
-            }
-
-            .footer-content {
-                gap: 30px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .container {
-                padding: 0 10px;
-            }
-
-            .header-content {
-                padding: 8px 0;
-            }
-
-            .logo-text {
-                font-size: 20px;
-            }
-
-            .logo-icon {
-                font-size: 22px;
-            }
-
-            .hero {
-                padding: 40px 10px;
-                min-height: 100vh;
-            }
-
-            .terminal-body {
-                height: 300px;
-                padding: 10px;
-            }
-
-            .terminal-header {
-                padding: 10px;
-            }
-
-            .terminal-title {
-                font-size: 0.8rem;
-            }
-
-            .features-grid,
-            .models-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .feature-card,
-            .model-card {
-                padding: 15px;
-            }
-
-            .feature-icon {
-                font-size: 32px;
-            }
-
-            .model-icon {
-                font-size: 28px;
-            }
-
-            .footer-content {
-                grid-template-columns: 1fr;
-                gap: 25px;
-            }
-
-            .code-block {
-                padding: 12px;
-                font-size: 0.9rem;
-            }
-        }
-
-        /* Animation for terminal text */
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
-
-        .cursor {
-            display: inline-block;
-            width: 8px;
-            height: 18px;
-            background: var(--primary);
-            margin-left: 5px;
-            animation: blink 1s infinite;
-        }
-
-        /* Typewriter effect */
-        .typewriter {
-            overflow: hidden;
-            border-right: 2px solid var(--primary);
-            white-space: nowrap;
-            margin: 0 auto;
-            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
-        }
-
-        @keyframes typing {
-            from { width: 0 }
-            to { width: 100% }
-        }
-
-        @keyframes blink-caret {
-            from, to { border-color: transparent }
-            50% { border-color: var(--primary) }
-        }
-
-        /* Loading animations */
-        .loading-dots:after {
-            content: ' .';
-            animation: dots 1.5s steps(5, end) infinite;
-        }
-
-        @keyframes dots {
-            0%, 20% { color: rgba(0,0,0,0); text-shadow: .25em 0 0 rgba(0,0,0,0), .5em 0 0 rgba(0,0,0,0); }
-            40% { color: var(--primary); text-shadow: .25em 0 0 rgba(0,0,0,0), .5em 0 0 rgba(0,0,0,0); }
-            60% { text-shadow: .25em 0 0 var(--primary), .5em 0 0 rgba(0,0,0,0); }
-            80%, 100% { text-shadow: .25em 0 0 var(--primary), .5em 0 0 var(--primary); }
-        }
-
-        .fade-in {
-            opacity: 0;
-            animation: fadeIn 1s ease forwards;
-        }
-
-        @keyframes fadeIn {
-            to { opacity: 1; }
-        }
-
-        .slide-up {
-            transform: translateY(20px);
-            opacity: 0;
-            animation: slideUp 0.5s ease forwards;
-        }
-
-        @keyframes slideUp {
-            to { transform: translateY(0); opacity: 1; }
+        .nav.active .nav-links {
+            display: flex;
+            flex-direction: column;
+            position: absolute;
+            top: 60px;
+            right: 20px;
+            background: var(--bg);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid rgba(229,57,53,0.3);
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
     <header>
         <div class="container">
             <div class="header-content">
                 <a href="#" class="logo">
-                    <div class="logo-icon">
-                        <i class="fas fa-terminal"></i>
-                    </div>
+                    <div class="logo-icon"><i class="fas fa-terminal"></i></div>
                     <div class="logo-text">PATCH AI</div>
                 </a>
-
-                <button class="mobile-menu-toggle" id="mobileMenuToggle">
-                    <i class="fas fa-bars"></i>
-                </button>
-
+                <button class="mobile-menu-toggle" id="mobileMenuToggle"><i class="fas fa-bars"></i></button>
                 <nav class="nav" id="nav">
                     <div class="nav-links">
+                        <a href="#demo">Demo</a>
                         <a href="#features">Features</a>
-                        <a href="#models">How It Works</a>
-                        <a href="#setup">Get Started</a>
-                        <a href="#terminal">Try Demo</a>
+                        <a href="#pricing">Pricing</a>
+                        <a href="#contact">Contact</a>
                     </div>
-                    <a href="https://nerdspace-hub-cr.vercel.app" class="cta-button" target="_blank">NerdSpace</a>
+                    <a href="#contact" class="cta-button">Order Yours →</a>
                 </nav>
             </div>
         </div>
     </header>
 
-    <!-- Hero Section with Video Background - FIXED HEIGHT -->
-    <section class="hero" id="hero">
+    <section class="hero">
         <video autoplay muted loop playsinline class="hero-video">
             <source src="patch.mp4" type="video/mp4">
-            Your browser does not support the video tag.
         </video>
         <div class="hero-overlay"></div>
-        <!-- Removed container wrapper for perfect centering -->
         <div class="hero-content">
-            <h1>PATCH: On The Go, Sir?</h1>
-            <p>Your lightweight AI companion for adventures offline. Never be without help, even in the most remote places.</p>
-            <a href="#terminal" class="cta-button">Try Live Demo</a>
+            <h1>Custom Terminal Interfaces for Ollama</h1>
+            <p>I build personalized CLI companions – branded, memory‑aware, and tailored exactly to your workflow. You bring the model, I build the interface.</p>
+            <a href="#contact" class="cta-button">Get Your Custom Build →</a>
         </div>
     </section>
 
-    <!-- Terminal Section with Video Background -->
-    <section class="terminal-section" id="terminal">
-        <video autoplay muted loop playsinline class="terminal-video">
-            <source src="woods.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-        <div class="terminal-overlay"></div>
+    <!-- Demo Showcase – what a personalized interface looks like -->
+    <section class="demo-showcase" id="demo">
         <div class="container">
             <div class="section-title">
-                <h2>Interactive Demo</h2>
-                <p>Experience PATCH AI right in your browser. Type "start" below to begin the demo.</p>
+                <h2>Your AI, Your Style</h2>
+                <p>A glimpse of what I can build for you.</p>
             </div>
-
-            <div class="terminal-container">
-                <div class="terminal-header">
-                    <div class="terminal-buttons">
-                        <div class="terminal-button close"></div>
-                        <div class="terminal-button minimize"></div>
-                        <div class="terminal-button maximize"></div>
+            <div class="demo-grid">
+                <div class="demo-terminal">
+                    <div class="demo-header">
+                        <div class="demo-buttons">
+                            <div class="demo-button red"></div>
+                            <div class="demo-button yellow"></div>
+                            <div class="demo-button green"></div>
+                        </div>
+                        <div class="demo-title">ollama – custom shell</div>
                     </div>
-                    <div class="terminal-title">patch-ai-console — On The Go, Sir? — Mode Online</div>
+                    <div class="demo-body">
+                        <div class="line"><span class="prompt">┌─[user@venture]</span></div>
+                        <div class="line"><span class="prompt">└─[$]</span> ollama run my-custom-model</div>
+                        <div class="line"><span class="demo-highlight">[Custom Model] Loading your context...</span></div>
+                        <div class="line"><span class="demo-highlight">></span> Hey, ready for today's expedition?</div>
+                        <div class="line">────────────────────────────────</div>
+                        <div class="line">✨ Branded prompt, memory of previous chats</div>
+                        <div class="line">✨ Personalized command shortcuts</div>
+                        <div class="line">✨ Offline‑first, privacy guaranteed</div>
+                        <div class="line"><span class="prompt">></span> <span style="color: #888;">_</span></div>
+                    </div>
                 </div>
-                <div class="terminal-body" id="terminalBody">
-                    <div class="terminal-output">
-                        <div class="output-line system">PATCH AI Console v1.0.3</div>
-                        <div class="output-line system">Initializing systems...</div>
-                        <div class="output-line system">Offline mode activated</div>
-                        <div class="output-line system">Memory systems loaded</div>
-                        <div class="output-line success">System ready. Type 'start' to begin the demo.</div>
-                    </div>
-                    <div class="command-line">
-                        <span class="prompt">Patch(Demo):</span>
-                        <input type="text" class="command-input" id="commandInput">
-                        <span class="cursor"></span>
-                    </div>
+                <div class="demo-text">
+                    <h3>Not just a generic terminal</h3>
+                    <p>You get a fully customized CLI experience with your own logo, color scheme, pre‑loaded system prompts, and memory that persists across sessions. It's your AI, wrapped in an interface that feels like home.</p>
+                    <p><i class="fas fa-check-circle" style="color: var(--success);"></i> Works with any Ollama model<br>
+                    <i class="fas fa-check-circle" style="color: var(--success);"></i> I handle the scripting, you just run it<br>
+                    <i class="fas fa-check-circle" style="color: var(--success);"></i> One‑time build + optional updates</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Features Section -->
+    <!-- Features (the service) -->
     <section class="features" id="features">
         <div class="container">
             <div class="section-title">
-                <h2>Why PATCH Is Perfect For Adventures</h2>
-                <p>PATCH is designed specifically for people on the move who can't always rely on internet connections.</p>
+                <h2>What I Build For You</h2>
+                <p>Every interface is hand‑crafted for your specific needs.</p>
             </div>
-
             <div class="features-grid">
                 <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-satellite-dish"></i>
-                    </div>
-                    <h3>Works Completely Offline</h3>
-                    <p>No internet? No problem! PATCH runs entirely on your device, so you can use it anywhere - from mountain tops to remote forests.</p>
+                    <div class="feature-icon"><i class="fas fa-palette"></i></div>
+                    <h3>Full Branding</h3>
+                    <p>Your logo, your colors, your ASCII art – the terminal feels like an extension of your project.</p>
                 </div>
-
                 <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-weight"></i>
-                    </div>
-                    <h3>Lightweight & Fast</h3>
-                    <p>PATCH is designed to be small and efficient, so it doesn't drain your battery or slow down your device while you're traveling.</p>
+                    <div class="feature-icon"><i class="fas fa-brain"></i></div>
+                    <h3>Persistent Memory</h3>
+                    <p>Your AI companion remembers past conversations, user preferences, and custom instructions across sessions.</p>
                 </div>
-
                 <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-history"></i>
-                    </div>
-                    <h3>Remembers Everything</h3>
-                    <p>PATCH keeps track of your conversations, notes, and preferences, so it gets better at helping you the more you use it.</p>
+                    <div class="feature-icon"><i class="fas fa-terminal"></i></div>
+                    <h3>Custom Commands</h3>
+                    <p>Shortcuts, macros, and special flags tailored to your workflow – save keystrokes every day.</p>
                 </div>
-
                 <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-hiking"></i>
-                    </div>
-                    <h3>Adventure-Ready</h3>
-                    <p>Whether you're planning routes, identifying plants, or just need travel advice, PATCH is your perfect hiking companion.</p>
+                    <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+                    <h3>Offline & Private</h3>
+                    <p>Runs entirely on your hardware with Ollama. No data leaves your machine.</p>
                 </div>
-
                 <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <h3>Privacy Focused</h3>
-                    <p>Since everything happens on your device, your conversations and data stay private - no one else can access them.</p>
+                    <div class="feature-icon"><i class="fas fa-code"></i></div>
+                    <h3>Ready‑to‑Run Script</h3>
+                    <p>I deliver a single shell script or Python wrapper – you just chmod +x and run.</p>
                 </div>
-
                 <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-bolt"></i>
-                    </div>
-                    <h3>Quick Setup</h3>
-                    <p>Get PATCH running in minutes, not hours. Simple installation means you can start using it right away.</p>
+                    <div class="feature-icon"><i class="fas fa-headset"></i></div>
+                    <h3>Support & Tweaks</h3>
+                    <p>Two weeks of free adjustments after delivery. Optional maintenance package available.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Models Section -->
-    <section class="models" id="models">
+    <!-- Pricing / Packages -->
+    <section class="pricing" id="pricing">
         <div class="container">
             <div class="section-title">
-                <h2>How PATCH Works</h2>
-                <p>PATCH uses lightweight AI models that are perfect for offline use on portable devices.</p>
+                <h2>Simple, Transparent Pricing</h2>
+                <p>One project, one price – no hidden fees.</p>
             </div>
-
-            <div class="models-grid">
-                <div class="model-card">
-                    <div class="model-icon">
-                        <i class="fas fa-feather"></i>
-                    </div>
-                    <h3>TinyLlama - The Lightweight</h3>
-                    <p>Super small and fast, perfect for quick answers and everyday tasks when you're on the move.</p>
-                    <div class="model-status status-online">Default Model</div>
-                </div>
-
-                <div class="model-card">
-                    <div class="model-icon">
-                        <i class="fas fa-robot"></i>
-                    </div>
-                    <h3>SmollM2 - The Balanced</h3>
-                    <p>A bit more powerful but still lightweight, great for when you need more detailed answers.</p>
-                    <div class="model-status status-online">Available</div>
-                </div>
-
-                <div class="model-card">
-                    <div class="model-icon">
-                        <i class="fas fa-brain"></i>
-                    </div>
-                    <h3>DeepSeek - The Thinker</h3>
-                    <p>For when you need deep thinking and complex problem-solving on your adventures.</p>
-                    <div class="model-status status-online">Available</div>
-                </div>
-
-                <div class="model-card">
-                    <div class="model-icon">
-                        <i class="fas fa-memory"></i>
-                    </div>
-                    <h3>Smart Memory System</h3>
-                    <p>PATCH remembers your preferences, past conversations, and what you've learned together.</p>
-                    <div class="model-status status-online">Always Learning</div>
-                </div>
+            <div class="pricing-card">
+                <h3>Custom Ollama Interface</h3>
+                <div class="price">$299 <small>one‑time</small></div>
+                <ul class="pricing-list">
+                    <li>Complete custom terminal interface (bash/python)</li>
+                    <li>Your branding (logo, colors, custom prompt)</li>
+                    <li>Persistent memory (chat history, context)</li>
+                    <li>Up to 5 custom commands / shortcuts</li>
+                    <li>Compatible with any Ollama model (tinyllama, llama3, etc.)</li>
+                    <li>Two weeks of free adjustments</li>
+                    <li>Delivery in 5‑7 business days</li>
+                </ul>
+                <a href="#contact" class="cta-button" style="display: inline-block; margin-top: 20px;">Request Build →</a>
+                <p style="margin-top: 20px; font-size: 0.8rem;">Optional: Monthly maintenance & updates – $49/month</p>
             </div>
         </div>
     </section>
 
-    <!-- Setup Section -->
-    <section class="setup" id="setup">
+    <!-- Contact / Order Form -->
+    <section class="contact" id="contact">
         <div class="container">
             <div class="section-title">
-                <h2>Get PATCH Ready For Your Next Adventure</h2>
-                <p>Setting up PATCH is quick and easy - you'll be ready for your next trip in no time.</p>
+                <h2>Let's Build Your Interface</h2>
+                <p>Tell me about your project, and I'll get back to you within 24h.</p>
             </div>
-
-            <div class="setup-steps">
-                <div class="setup-step">
-                    <div class="step-number">1</div>
-                    <div class="step-content">
-                        <h3>Install Ollama</h3>
-                        <p>Ollama is the engine that runs AI models on your computer. It's free and easy to install.</p>
-                        <div class="code-block">
-                            <code># Download from https://ollama.ai<br># Choose your operating system and install</code>
-                        </div>
+            <div class="contact-form">
+                <form id="orderForm" action="https://formspree.io/f/your-form-id" method="POST">
+                    <div class="form-group">
+                        <label for="name">Name / Company</label>
+                        <input type="text" id="name" name="name" class="form-control" required>
                     </div>
-                </div>
-
-                <div class="setup-step">
-                    <div class="step-number">2</div>
-                    <div class="step-content">
-                        <h3>Download PATCH's Brain</h3>
-                        <p>Once Ollama is installed, download the lightweight AI model that powers PATCH.</p>
-                        <div class="code-block">
-                            <code># Open terminal/command prompt and run:<br>ollama pull tinyllama</code>
-                        </div>
-                        <p>This only takes a few minutes and downloads everything PATCH needs to work offline.</p>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" class="form-control" required>
                     </div>
-                </div>
-
-                <div class="setup-step">
-                    <div class="step-number">3</div>
-                    <div class="step-content">
-                        <h3>Get the PATCH Interface</h3>
-                        <p>Download the PATCH console that gives you the cool terminal interface to interact with.</p>
-                        <div class="code-block">
-                            <code># Download from our website<br># This gives you the adventure-ready interface</code>
-                        </div>
+                    <div class="form-group">
+                        <label for="model">Which Ollama model(s) will you use?</label>
+                        <input type="text" id="model" name="model" class="form-control" placeholder="e.g., tinyllama, llama3, mistral" required>
                     </div>
-                </div>
-
-                <div class="setup-step">
-                    <div class="step-number">4</div>
-                    <div class="step-content">
-                        <h3>Start Your Adventure!</h3>
-                        <p>Run PATCH and start having conversations with your new AI hiking companion.</p>
-                        <div class="code-block">
-                            <code># Double-click the PATCH icon<br># Or run: ./patch-console</code>
-                        </div>
-                        <p>That's it! You're now ready to take PATCH on your next adventure.</p>
+                    <div class="form-group">
+                        <label for="details">Special requests / branding / custom commands</label>
+                        <textarea id="details" name="details" rows="4" class="form-control" placeholder="Describe your ideal interface..."></textarea>
                     </div>
-                </div>
+                    <button type="submit">Send Request →</button>
+                    <p style="font-size: 0.7rem; margin-top: 15px; text-align: center;">I’ll reply with a quote and timeline.</p>
+                </form>
+                <div id="formStatus" style="margin-top: 20px; text-align: center;"></div>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer>
+    <footer class="footer">
         <div class="container">
             <div class="footer-content">
-                <div class="footer-column">
-                    <h3>PATCH AI</h3>
-                    <p>Your lightweight AI companion for adventures offline. Never be without help, even in the most remote places.</p>
-                    <div class="social-links">
-                        <a href="#" class="social-link"><i class="fab fa-github"></i></a>
-                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
-                    </div>
-                </div>
-
-                <div class="footer-column">
-                    <h3>Learn More</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Adventure Guides</a></li>
-                        <li><a href="#">Travel Tips</a></li>
-                        <li><a href="#">Offline Usage</a></li>
-                        <li><a href="#">Community Stories</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-column">
-                    <h3>Download</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Windows</a></li>
-                        <li><a href="#">macOS</a></li>
-                        <li><a href="#">Linux</a></li>
-                        <li><a href="#">Mobile (Coming Soon)</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-column">
-                    <h3>Connect</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">GitHub</a></li>
-                        <li><a href="#">Twitter</a></li>
-                        <li><a href="#">Adventure Community</a></li>
-                        <li><a href="#">Contact</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="footer-bottom">
-                <p>&copy; 2025 PATCH AI Console.NerdSpace.</p>
+                <p>© 2026 PATCH AI – Custom terminal interfaces for Ollama. Built by Cesar.</p>
             </div>
         </div>
     </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const terminalBody = document.getElementById('terminalBody');
-            const commandInput = document.getElementById('commandInput');
-            const mobileMenuToggle = document.getElementById('mobileMenuToggle');
-            const nav = document.getElementById('nav');
-            const hero = document.getElementById('hero');
-            
-            // Scroll to top on page load
-            window.scrollTo(0, 0);
-            
-            // Add loaded class to hero section after a short delay
-            setTimeout(() => {
-                hero.classList.add('loaded');
-            }, 300);
-            
-            // Mobile menu toggle
-            mobileMenuToggle.addEventListener('click', function() {
+        // Mobile menu toggle
+        const toggleBtn = document.getElementById('mobileMenuToggle');
+        const nav = document.getElementById('nav');
+        if (toggleBtn) {
+            toggleBtn.addEventListener('click', () => {
                 nav.classList.toggle('active');
             });
-            
-            // Command history and responses
-            const commandHistory = [];
-            let historyIndex = -1;
-            let demoStarted = false;
-            
-            // Available commands and responses
-            const commands = {
-                'start': '',
-                'help': `Available commands:
-  start - Begin the PATCH demo experience
-  help - Show this help message
-  about - Learn about PATCH
-  how - How PATCH works in simple terms
-  clear - Clear the terminal`,
-                
-                'about': `PATCH: On The Go, Sir?
-  
-PATCH is your lightweight AI companion designed for adventures:
-  - Works completely offline - no internet needed!
-  - Small and efficient - doesn't drain your battery
-  - Remembers your conversations and preferences
-  - Perfect for hikers, travelers, and anyone on the move
-  
-Whether you're in the mountains, forests, or anywhere without signal, PATCH has your back.`,
-                
-                'how': `Here's how PATCH works in simple terms:
-  
-PATCH is like having a smart friend in your pocket that:
-  - Doesn't need internet to work
-  - Remembers what you talk about
-  - Gets better at helping you over time
-  - Is small enough to run on your laptop or phone
-  
-It's perfect for when you're hiking, traveling, or just away from good internet connections!
-  
-Type 'start' to see PATCH in action!`,
-                
-                'clear': '', // Special case - handled separately
-                
-                '': '' // Handle empty input
-            };
-            
-            // Default response for unknown commands
-            const defaultResponse = "Hmm, I don't recognize that command. Type 'help' to see what you can do, or 'start' to begin the demo!";
-            
-            // Function to add output to terminal
-            function addOutput(text, className = '') {
-                const outputLine = document.createElement('div');
-                outputLine.className = `output-line ${className}`;
-                outputLine.textContent = text;
-                terminalBody.insertBefore(outputLine, terminalBody.lastElementChild);
-                terminalBody.scrollTop = terminalBody.scrollHeight;
-            }
-            
-            // Function to type text with a typewriter effect
-            function typeText(text, className = '', speed = 30, callback = null) {
-                const outputLine = document.createElement('div');
-                outputLine.className = `output-line ${className}`;
-                terminalBody.insertBefore(outputLine, terminalBody.lastElementChild);
-                
-                let i = 0;
-                function typeChar() {
-                    if (i < text.length) {
-                        outputLine.textContent += text.charAt(i);
-                        i++;
-                        setTimeout(typeChar, speed);
-                        terminalBody.scrollTop = terminalBody.scrollHeight;
-                    } else if (callback) {
-                        callback();
-                    }
-                }
-                typeChar();
-            }
-            
-            // Function to show loading animation
-            function showLoading(text, duration = 1500, callback = null) {
-                const outputLine = document.createElement('div');
-                outputLine.className = 'output-line system';
-                outputLine.textContent = text;
-                outputLine.classList.add('loading-dots');
-                terminalBody.insertBefore(outputLine, terminalBody.lastElementChild);
-                terminalBody.scrollTop = terminalBody.scrollHeight;
-                
-                setTimeout(() => {
-                    outputLine.classList.remove('loading-dots');
-                    if (callback) callback();
-                }, duration);
-            }
-            
-            // Function to process commands
-            function processCommand(command) {
-                // Add command to history
-                commandHistory.push(command);
-                historyIndex = commandHistory.length;
-                
-                // Show the command that was entered
-                addOutput(`user@patch:~$ ${command}`);
-                
-                // Process special commands
-                if (command === 'clear') {
-                    // Clear terminal except the last command line
-                    const outputLines = document.querySelectorAll('.output-line');
-                    outputLines.forEach(line => line.remove());
-                    return;
-                }
-                
-                // Handle start command (demo)
-                if (command === 'start' && !demoStarted) {
-                    demoStarted = true;
-                    
-                    // Clear terminal
-                    const outputLines = document.querySelectorAll('.output-line');
-                    outputLines.forEach(line => line.remove());
-                    
-                    // Start demo sequence
-                    setTimeout(() => {
-                        addOutput("Starting PATCH demo...", "system");
-                        
-                        setTimeout(() => {
-                            showLoading("Activating offline mode", 1200, () => {
-                                setTimeout(() => {
-                                    showLoading("Loading lightweight AI model", 1200, () => {
-                                        setTimeout(() => {
-                                            showLoading("Initializing memory systems", 1200, () => {
-                                                setTimeout(() => {
-                                                    addOutput("All systems ready!", "success");
-                                                    
-                                                    setTimeout(() => {
-                                                        typeText("Hey there! I'm PATCH.", "system", 40, () => {
-                                                            setTimeout(() => {
-                                                                typeText("Think of me as your adventure buddy that lives in your pocket.", "", 40, () => {
-                                                                    setTimeout(() => {
-                                                                        typeText("", "", 40, () => {
-                                                                            setTimeout(() => {
-                                                                                typeText("Here's what makes me special:", "", 30, () => {
-                                                                                    setTimeout(() => {
-                                                                                        typeText("", "", 30, () => {
-                                                                                            setTimeout(() => {
-                                                                                                typeText("• I work COMPLETELY OFFLINE - no internet needed!", "", 30, () => {
-                                                                                                    setTimeout(() => {
-                                                                                                        typeText("• I'm lightweight and fast - won't drain your battery", "", 30, () => {
-                                                                                                            setTimeout(() => {
-                                                                                                                typeText("• I remember our chats - so I get better at helping you", "", 30, () => {
-                                                                                                                    setTimeout(() => {
-                                                                                                                        typeText("", "", 30, () => {
-                                                                                                                            setTimeout(() => {
-                                                                                                                                typeText("Whether you're:", "", 40, () => {
-                                                                                                                                    setTimeout(() => {
-                                                                                                                                        typeText("- Hiking in the mountains", "", 30, () => {
-                                                                                                                                            setTimeout(() => {
-                                                                                                                                                typeText("- Traveling in remote areas", "", 30, () => {
-                                                                                                                                                    setTimeout(() => {
-                                                                                                                                                        typeText("- Just somewhere with bad signal", "", 30, () => {
-                                                                                                                                                            setTimeout(() => {
-                                                                                                                                                                typeText("", "", 30, () => {
-                                                                                                                                                                    setTimeout(() => {
-                                                                                                                                                                        typeText("I'll be there to help with directions, information, or just conversation.", "", 40, () => {
-                                                                                                                                                                            setTimeout(() => {
-                                                                                                                                                                                typeText("", "", 40, () => {
-                                                                                                                                                                                    setTimeout(() => {
-                                                                                                                                                                                        typeText("I'm your reliable companion when you're off the grid.", "system", 60, () => {
-                                                                                                                                                                                            setTimeout(() => {
-                                                                                                                                                                                                typeText("", "", 60, () => {
-                                                                                                                                                                                                    setTimeout(() => {
-                                                                                                                                                                                                        addOutput("Demo completed. Type 'about' to learn more or 'how' to understand how I work!", "success");
-                                                                                                                                                                                                    }, 500);
-                                                                                                                                                                                                });
-                                                                                                                                                                                            }, 500);
-                                                                                                                                                                                        });
-                                                                                                                                                                                    }, 500);
-                                                                                                                                                                                });
-                                                                                                                                                                            }, 500);
-                                                                                                                                                                        });
-                                                                                                                                                                    }, 500);
-                                                                                                                                                                });
-                                                                                                                                                            }, 500);
-                                                                                                                                                        });
-                                                                                                                                                    }, 500);
-                                                                                                                                                });
-                                                                                                                                            }, 500);
-                                                                                                                                        });
-                                                                                                                                    }, 500);
-                                                                                                                                });
-                                                                                                                            }, 500);
-                                                                                                                        });
-                                                                                                                    }, 500);
-                                                                                                                });
-                                                                                                            }, 500);
-                                                                                                        });
-                                                                                                    }, 500);
-                                                                                                });
-                                                                                            }, 500);
-                                                                                        });
-                                                                                    }, 500);
-                                                                                });
-                                                                            }, 500);
-                                                                        });
-                                                                    }, 500);
-                                                                });
-                                                            }, 500);
-                                                        });
-                                                    }, 1000);
-                                                }, 500);
-                                            });
-                                        }, 500);
-                                    });
-                                }, 500);
-                            });
-                        }, 500);
-                    }, 500);
-                    
-                    return;
-                } else if (command === 'start' && demoStarted) {
-                    addOutput("Demo already running! Type 'clear' to reset the terminal.", "system");
-                    return;
-                }
-                
-                // Get response or use default
-                const response = commands[command.toLowerCase()] || defaultResponse;
-                
-                // Add response to terminal
-                if (response) {
-                    // Split response by lines and add each separately
-                    response.split('\n').forEach(line => {
-                        addOutput(line);
-                    });
-                }
-            }
-            
-            // Handle command input
-            commandInput.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') {
-                    const command = commandInput.value.trim();
-                    if (command) {
-                        processCommand(command);
-                    }
-                    commandInput.value = '';
-                } else if (e.key === 'ArrowUp') {
-                    // Navigate command history
-                    e.preventDefault();
-                    if (commandHistory.length > 0) {
-                        if (historyIndex > 0) {
-                            historyIndex--;
-                        }
-                        commandInput.value = commandHistory[historyIndex] || '';
-                    }
-                } else if (e.key === 'ArrowDown') {
-                    // Navigate command history
-                    e.preventDefault();
-                    if (historyIndex < commandHistory.length - 1) {
-                        historyIndex++;
-                        commandInput.value = commandHistory[historyIndex] || '';
-                    } else {
-                        historyIndex = commandHistory.length;
-                        commandInput.value = '';
-                    }
-                }
-            });
-            
-            // Focus on input when clicking anywhere in terminal
-            terminalBody.addEventListener('click', function() {
-                commandInput.focus();
-            });
-            
-            // Close mobile menu when clicking on a link
-            const navLinks = document.querySelectorAll('.nav-links a');
-            navLinks.forEach(link => {
-                link.addEventListener('click', function() {
+        }
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (href === '#') return;
+                e.preventDefault();
+                const target = document.querySelector(href);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                     nav.classList.remove('active');
-                });
+                }
             });
+        });
+
+        // Form submission (Formspree)
+        const form = document.getElementById('orderForm');
+        const statusDiv = document.getElementById('formStatus');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            statusDiv.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Sending...';
+            const formData = new FormData(form);
+            try {
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: { 'Accept': 'application/json' }
+                });
+                if (response.ok) {
+                    statusDiv.innerHTML = '<span style="color: #10b981;">✓ Request sent! I’ll email you within 24h.</span>';
+                    form.reset();
+                } else {
+                    throw new Error();
+                }
+            } catch (err) {
+                statusDiv.innerHTML = '<span style="color: #ef4444;">✗ Error. Please email me directly at patch@cesar.dev</span>';
+            }
+            setTimeout(() => { statusDiv.innerHTML = ''; }, 5000);
         });
     </script>
 </body>
